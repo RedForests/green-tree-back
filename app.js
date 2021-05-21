@@ -5,8 +5,12 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-
+const cors = require("cors");
 var app = express();
+
+
+app.use(cors());
+
 // view engine setup
 // app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -34,6 +38,10 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+});
+
+app.listen(3002, () => {
+  console.log("Nodejs server running on port 3002");
 });
 
 module.exports = app;
