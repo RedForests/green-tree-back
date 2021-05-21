@@ -19,7 +19,7 @@ router.get("/session", (req, res) => {
 
 router.post("/signin", (req, res) => { // 로그인
   console.log("signin!!", req.body);
-  var id = req.body.id;
+  var id = req.body.email;
   var password = req.body.password;
 
   db.query(
@@ -42,14 +42,13 @@ router.post("/signup", (req, res) => { // 회원가입
   var name = req.body.name;
   var address = req.body.address;
   var phone = req.body.phone;
-  console.log(id, password, name);
   db.query(`select * from user where email='${email}'`, (err, results, field) => {
     console.log(results);
     if (results.length != 0) {
       res.send({ success: false, message: "이미 존재하는 아이디입니다." });
     } else {
       db.query(
-        `insert into user(email, password, name, address, phone) values ('${email}', '${password}', '${name}', '${address}', '${phone}');`,
+        `insert into user(email, password, name, address, phone) values ('${email}', '${password}', '${name}', '${address}', '${pho}');`,
         (err, results, field) => {
           res.send({ success: true });
         }
