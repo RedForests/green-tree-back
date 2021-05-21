@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const compression = require("compression");
 const db = require("../lib/db");
-const jwt = require("../modules/jwt");
+const jwt = require("../lib/jwt");
 
 router.use(compression());
 router.use(bodyParser.urlencoded({ extended: false }));
@@ -30,7 +30,8 @@ router.post("/signin", async (req, res) => { // 로그인
         res.send({ success: false });
       } else {
         const jwtToken = await jwt.sign(id);
-        res.send({ success: true, token: jwtToken });
+	const token = jwtToken.token;
+        res.send({ success: true, token: token });
       }
     }
   );
