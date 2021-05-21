@@ -207,7 +207,7 @@ router.post("/levelup", (req, res) => {
 
     // db 의 product 테이블에 상품을 편집하기 위한 코드
     db.query(
-      `update user set experience = experience + ${experience} where id = '${userid}'`,
+      `update user set experience = experience + ${experience} where email = '${userid}'`,
       (err, results, field) => {
         if (err) {
           console.log(err);
@@ -215,7 +215,7 @@ router.post("/levelup", (req, res) => {
           // 등록하는 과정에 에러가 있으면 {success: false} 반환
         } else {
           db.query(
-            `select experience from user where id = '${userid}'`,
+            `select experience from user where email = '${userid}'`,
             (err, results, field) => {
               if (err) {
                 console.log(err);
