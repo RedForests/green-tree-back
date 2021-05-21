@@ -8,7 +8,7 @@ var getLevel = require("../lib/level");
 router.get("/get_comment/:id", (req, res) => {
   try {
     var id = req.params.id;
-	  console.log(id);
+    console.log(id);
     if (id === undefined) res.json({ success: false });
     else {
       // db 의 comment 에서 id, description, userid, createdate 를 가져오기 위한 코드
@@ -207,23 +207,22 @@ router.post("/levelup", (req, res) => {
 
     // db 의 product 테이블에 상품을 편집하기 위한 코드
     db.query(
-      `update board set experience = experience + ${experience} where id = ${userid}`,
+      `update user set experience = experience + ${experience} where id = '${userid}'`,
       (err, results, field) => {
         if (err) {
-		console.log(err);
+          console.log(err);
           res.json({ success: false });
           // 등록하는 과정에 에러가 있으면 {success: false} 반환
         } else {
           db.query(
-            `select experience from board where id = ${userid}`,
+            `select experience from user where id = '${userid}'`,
             (err, results, field) => {
-              if (err){
-		      console.log(err);
+              if (err) {
+                console.log(err);
                 res.json({
                   success: false,
                 });
-	      }
-              else
+              } else
                 res.json({
                   success: true,
                   data: {
