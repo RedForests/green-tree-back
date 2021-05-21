@@ -72,8 +72,7 @@ router.delete("/delete_comment/:id",authUtil, (req, res) => {
 });
 
 /********************************      센터 정보 관리    ******************************** */
-router.get("/get_center", authUtil, async (req, res, next) => {
-  console.log(req.email);
+router.get("/get_center", async (req, res, next) => {
   try {
     db.query(`select * from tet`, (err, results, field) => {
       if (err) {
@@ -262,7 +261,31 @@ router.post("/levelup", authUtil, (req, res) => {
     res.json({ success: false });
   }
 });
-
+router.get("/rank", authUtil, (req, res) => {
+  try {
+    var userid = req.email;
+    // db 의 product 테이블에 상품을 삭제하기 위한 코드
+    db.query(
+      `select email, name, experience from user order by experience desc`,
+      (err, results, field) => {
+        if (err) {
+          console.log(err);
+          res.json({ success: false });
+          // 등록하는 과정에 에러가 있으면 {success: false} 반환
+        } else {
+          res.json({
+            success: true,
+            data: results,
+          });
+          // 성공적으로 삭제하였으면 {success : true} 반환
+        }
+      }
+    );
+  } catch (err) {
+    console.log(err);
+    res.json({ success: false });
+  }
+});
 
 router.get("/todolist", authUtil, (req, res) => {
   try {
@@ -290,38 +313,14 @@ router.get("/todolist", authUtil, (req, res) => {
     res.json({ success: false });
   }
 });
-router.get("/rank", authUtil, (req, res) => {
-  try {
-    var userid = req.email;
-    // db 의 product 테이블에 상품을 삭제하기 위한 코드
-    db.query(
-      `select email, name, experience from user order by experience desc`,
-      (err, results, field) => {
-        if (err) {
-          console.log(err);
-          res.json({ success: false });
-          // 등록하는 과정에 에러가 있으면 {success: false} 반환
-        } else {
-          res.json({
-            success: true,
-            data: results,
-          });
-          // 성공적으로 삭제하였으면 {success : true} 반환
-        }
-      }
-    );
-  } catch (err) {
-    console.log(err);
-    res.json({ success: false });
-  }
-});
+
 router.post("/todolist", authUtil, (req, res) => {
   try {
     var userid = req.email;
     var todoid = req.body.todoid;
     // db 의 product 테이블에 상품을 삭제하기 위한 코드
     db.query(
-      `select userid, todoid, done from todolist where userid = ${userid}`,
+      `insert into todolist(userid, todoid) values('${userid}', ${todoid})`,
       (err, results, field) => {
         if (err) {
           console.log(err);
@@ -330,7 +329,6 @@ router.post("/todolist", authUtil, (req, res) => {
         } else {
           res.json({
             success: true,
-            list: results,
           });
           // 성공적으로 삭제하였으면 {success : true} 반환
         }
@@ -347,7 +345,7 @@ router.delete("/todolist", authUtil, (req, res) => {
     var todoid = req.body.todoid;
     // db 의 product 테이블에 상품을 삭제하기 위한 코드
     db.query(
-      `delete from todolist where userid = ${userid}`,
+      `delete from todolist where userid = '${userid}' and todoid = ${todoid} `,
       (err, results, field) => {
         if (err) {
           console.log(err);
@@ -355,8 +353,7 @@ router.delete("/todolist", authUtil, (req, res) => {
           // 등록하는 과정에 에러가 있으면 {success: false} 반환
         } else {
           res.json({
-            success: true,
-            list: results,
+            success: true
           });
           // 성공적으로 삭제하였으면 {success : true} 반환
         }
@@ -367,5 +364,29 @@ router.delete("/todolist", authUtil, (req, res) => {
     res.json({ success: false });
   }
 });
-
+router.post("/donetodo", authUtil, (req, res) => {
+  try {
+    var userid = req.email;
+    var todoid = req.body.todoid;
+    // db 의 product 테이블에 상품을 삭제하기 위한 코드
+    db.query(
+      `update todolist set done = true where userid='${userid}' and todoid=${todoid} `,
+      (err, results, field) => {
+        if (err) {
+          console.log(err);
+          res.json({ success: false });
+          // 등록하는 과정에 에러가 있으면 {success: false} 반환
+        } else {
+          res.json({
+            success: true,
+          });
+          // 성공적으로 삭제하였으면 {success : true} 반환
+        }
+      }
+    );
+  } catch (err) {
+    console.log(err);
+    res.json({ success: false });
+  }
+});
 module.exports = router;
