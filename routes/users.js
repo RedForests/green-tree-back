@@ -23,14 +23,14 @@ router.get("/session", (req, res) => {
   }
 });
 
-router.post("/signin", (req, res) => { // 로그인
+router.post("/signin", async (req, res) => { // 로그인
   console.log("signin!!", req.body);
   var id = req.body.email;
   var password = req.body.password;
 
   db.query(
     `select name, id from user where email='${id}' and password='${password}'`,
-    (err, results, field) => {
+    async (err, results, field) => {
       if (results.length == 0) {
         res.send({ success: false });
       } else {
