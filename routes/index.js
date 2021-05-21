@@ -99,6 +99,24 @@ router.post("/create_board", (req, res) => {
     res.json({ success: false });
   }
 });
+router.delete("/delete_board/:id", (req, res) => {
+  try {
+    var id = req.params.id;
+    // var userid = req.body.userid;
+    db.query(
+      `delete from board where id=${id}`,
+      (err, results, field) => {
+        if (err) {
+          console.log(err);
+          res.json({ success: false });
+        } else res.json({ success: true });
+      }
+    );
+  } catch (err) {
+    console.log(err);
+    res.json({ success: false });
+  }
+});
 
 // 조회수 증가
 router.get("/view_board/:id", (req, res) => {
@@ -202,7 +220,7 @@ router.delete("/recommend_board/:id", (req, res) => {
 router.post("/levelup", (req, res) => {
   try {
     console.log("api create_product");
-    var userid = req.body.id;
+    var userid = req.body.userid;
     var experience = req.body.experience;
 
     // db 의 product 테이블에 상품을 편집하기 위한 코드
