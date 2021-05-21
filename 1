@@ -13,7 +13,7 @@ router.get("/get_comment/:id", (req, res) => {
     else {
       // db 의 comment 에서 id, description, userid, createdate 를 가져오기 위한 코드
       db.query(
-        `select * from comment where boardid=${id};`,
+        `select * from product where boardid=${id};`,
         (err, results, field) => {
           if (err || results === undefined || results.length === 0) {
             // 중간에 에러가 있거나, 댓글이 없으면! {success: false} 반환
@@ -210,19 +210,16 @@ router.post("/levelup", (req, res) => {
       `update board set experience = experience + ${experience} where id = ${userid}`,
       (err, results, field) => {
         if (err) {
-		console.log(err);
           res.json({ success: false });
           // 등록하는 과정에 에러가 있으면 {success: false} 반환
         } else {
           db.query(
             `select experience from board where id = ${userid}`,
             (err, results, field) => {
-              if (err){
-		      console.log(err);
+              if (err)
                 res.json({
                   success: false,
                 });
-	      }
               else
                 res.json({
                   success: true,
