@@ -4,13 +4,7 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const compression = require("compression");
 const db = require("../lib/db");
-const randToken = require("rand-token");
-const jwt = require("jsonwebtoken");
-const jwtKey = require('../lib/secretKey');
-const secretKey = jwtKey.secretKey;
-const options = jwtKey.options;
-const TOKEN_EXPIRED = -3;
-const TOKEN_INVALID = -2;
+const jwt = require("../modules/jwt");
 
 router.use(compression());
 router.use(bodyParser.urlencoded({ extended: false }));
