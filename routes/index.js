@@ -71,8 +71,7 @@ router.delete("/delete_comment/:id", (req, res) => {
 });
 
 /********************************      센터 정보 관리    ******************************** */
-router.get("/get_center", async (req, res, next) => {
-  authUtil(req, res, next);
+router.get("/get_center", authUtil, async (req, res, next) => {
   console.log(req.email);
   try {
     db.query(`select * from tet`, (err, results, field) => {
