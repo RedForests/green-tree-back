@@ -207,7 +207,7 @@ router.post("/levelup", (req, res) => {
 
     // db 의 product 테이블에 상품을 편집하기 위한 코드
     db.query(
-      `update board set experience = experience + ${experience} where id = ${userid}`,
+      `update board set experience = experience + ${experience} where id = '${userid}'`,
       (err, results, field) => {
         if (err) {
 		console.log(err);
