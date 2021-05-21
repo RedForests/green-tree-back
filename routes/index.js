@@ -428,4 +428,67 @@ router.post("/donetodo", authUtil, (req, res) => {
     res.json({ success: false });
   };
 });
+router.get("/gettodolist", authUtil, (req, res) => {
+  try {
+    var userid = req.email;
+    // db 의 product 테이블에 상품을 삭제하기 위한 코드
+    
+    res.json({
+      success: true,
+      data: todoList.map((item, idx) => {
+        return {id:idx, description:item}
+      })
+    });
+          // 성공적으로 삭제하였으면 {success : true} 반환
+        
+  } catch (err) {
+    console.log(err);
+    res.json({ success: false });
+  }
+});
+router.post("/donetodo", authUtil, (req, res) => {
+  try {
+    var userid = req.email;
+    var todoid = req.body.todoid;
+    // db 의 product 테이블에 상품을 삭제하기 위한 코드
+    db.query(
+      `update todolist set done = true where userid = '${userid}' and todoid = ${todoid} `,
+      (err, results, field) => {
+        if (err) {
+          console.log(err);
+          res.json({
+            success: false
+          });
+          // 등록하는 과정에 에러가 있으면 {success: false} 반환
+        } else {
+          db.query(
+            `update user set experience = experience + 10 where userid = '${userid}'`,
+            (err, results, field) => {
+              if (err) {
+                console.log(err);
+                res.json({
+                  success: false,
+                });
+                // 등록하는 과정에 에러가 있으면 {success: false} 반환
+              } else {
+                res.json({
+                  success: true
+                });
+                // 성공적으로 삭제하였으면 {success : true} 반환
+              }
+            }
+          );
+          res.json({
+            success: true
+          });
+          // 성공적으로 삭제하였으면 {success : true} 반환
+        }
+      }
+    );
+  } catch (err) {
+    console.log(err);
+    res.json({ success: false });
+  }
+});
+
 module.exports = router;
