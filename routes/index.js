@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 var db = require("../lib/db");
+const jwt = require("../lib/jwt");
 var getLevel = require("../lib/level");
 // db 설정해놨던거 가져오기
 
