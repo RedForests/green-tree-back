@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 var db = require("../lib/db");
 const jwt = require("../lib/jwt");
-const authUtil = require('../lib/auth');
+const authUtil = require('../lib/auth').checkToken;
 var getLevel = require("../lib/level");
 // db 설정해놨던거 가져오기
 const TOKEN_EXPIRED = -3;
@@ -71,7 +71,7 @@ router.delete("/delete_comment/:id", (req, res) => {
 });
 
 /********************************      센터 정보 관리    ******************************** */
-router.get("/get_center", async (req, res) => {
+router.get("/get_center", async (req, res, next) => {
   authUtil(req, res, next);
   console.log(req.email);
   try {
