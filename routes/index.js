@@ -55,6 +55,7 @@ router.post("/put_comment", (req, res) => {
   }
 });
 router.delete("/delete_comment/:id", (req, res) => {
+  
   try {
     var id = req.params.id;
     db.query(
@@ -71,19 +72,10 @@ router.delete("/delete_comment/:id", (req, res) => {
 
 /********************************      센터 정보 관리    ******************************** */
 router.get("/get_center", async (req, res) => {
-  const token = req.headers.token;
-  if (!token) return res.json({ success: false });
-  // decode
-  const user = await jwt.verify(token);
-	console.log(user);
-  // 유효기간 만료
-  if (user === TOKEN_EXPIRED) return res.json({ success: false });
-  // 유효하지 않는 토큰
-  if (user === TOKEN_INVALID) return res.json({ success: false });
-  if (user.iat === undefined) return res.json({ success: false });
-  
+  authUtil(req, res, next);
+  console.log(req.email);
   try {
-    db.query(`select * from center`, (err, results, field) => {
+    db.query(`select * from tet`, (err, results, field) => {
       if (err) {
         console.log(err);
         res.json({ success: false });
