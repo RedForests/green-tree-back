@@ -226,7 +226,7 @@ router.post("/levelup", (req, res) => {
                 res.json({
                   success: true,
                   data: {
-                    tier: results[0].experience,
+                    tier: getLevel(results[0].experience),
                   },
                 });
             }
