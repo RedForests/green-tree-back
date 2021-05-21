@@ -12,10 +12,11 @@ router.get("/get_comment/:id", (req, res) => {
     else {
       // db 의 comment 에서 id, description, userid, createdate 를 가져오기 위한 코드
       db.query(
-        `select * from product where boardid='${id}';`,
+        `select * from product where boardid=${id};`,
         (err, results, field) => {
           if (err || results === undefined || results.length === 0) {
             // 중간에 에러가 있거나, 댓글이 없으면! {success: false} 반환
+            console.log(err);
             res.json({ success: false });
           } else {
             // 상품을 정상적으로 찾았으면 {list: results} 형태로 반환
