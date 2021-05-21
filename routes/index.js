@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 var db = require("../lib/db");
 const jwt = require("../lib/jwt");
+const authUtil = rquire('../lib/auth');
 var getLevel = require("../lib/level");
 // db 설정해놨던거 가져오기
 
@@ -67,9 +68,15 @@ router.delete("/delete_comment/:id", (req, res) => {
 /********************************      센터 정보 관리    ******************************** */
 router.get("/get_center", async (req, res) => {
   const token = req.headers.token;
-	console.log(req.headers);
-  console.log(token);
-  console.log(await jwt.verify(token));
+  if (!token) return res.json({ success: false });
+  // decode
+  const user = await jwt.verify(token);
+  // 유효기간 만료
+  if (user === TOKEN_EXPIRED) return res.json({ success: false });
+  // 유효하지 않는 토큰
+  if (user === TOKEN_INVALID) return res.json({ success: false });
+  if (user.idx === undefined) return res.json({ success: false });
+  req.idx = user.idx;
   try {
     db.query(`select * from center`, (err, results, field) => {
       if (err) {
