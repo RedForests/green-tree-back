@@ -332,7 +332,7 @@ router.get("/todolist", authUtil, (req, res) => {
 
     // db 의 product 테이블에 상품을 삭제하기 위한 코드
     db.query(
-      `select userid, todoid, done from todolist where userid = ${userid}`,
+      `select userid, todoid, done from todolist where userid = '${userid}'`,
       (err, results, field) => {
         if (err) {
           console.log(err);
