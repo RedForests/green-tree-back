@@ -341,7 +341,9 @@ router.get("/todolist", authUtil, (req, res) => {
         } else {
           res.json({
             success: true,
-            list: results
+            list: results.map((item, idx) => {
+              return {done:item.done, description:todoList[todoid] ,id:todoid}
+            })
           });
           // 성공적으로 삭제하였으면 {success : true} 반환
         }
