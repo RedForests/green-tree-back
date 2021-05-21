@@ -6,8 +6,9 @@ const compression = require("compression");
 const db = require("../lib/db");
 const randToken = require("rand-token");
 const jwt = require("jsonwebtoken");
-const secretKey = require("../config/secretKey").secretKey;
-const options = require("../config/secretKey").options;
+const jwtKey = require('../lib/secretKey');
+const secretKey = jwtKey.secretKey;
+const options = jwtKey.options;
 const TOKEN_EXPIRED = -3;
 const TOKEN_INVALID = -2;
 
