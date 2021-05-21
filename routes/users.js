@@ -28,7 +28,7 @@ router.post("/signin", (req, res) => { // 로그인
       if (results.length == 0) {
         res.send({ success: false });
       } else {
-        res.send({ success: true, data: results[0].name });
+        res.send({ success: true, name: results[0].name });
       }
     }
   );
