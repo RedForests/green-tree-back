@@ -65,10 +65,11 @@ router.delete("/delete_comment/:id", (req, res) => {
 });
 
 /********************************      센터 정보 관리    ******************************** */
-router.get("/get_center", (req, res) => {
-  const token = req.header.token;
+router.get("/get_center", async (req, res) => {
+  const token = req.headers.token;
+	console.log(req.headers);
   console.log(token);
-  console.log(jwt.verify(token));
+  console.log(await jwt.verify(token));
   try {
     db.query(`select * from center`, (err, results, field) => {
       if (err) {
