@@ -261,6 +261,45 @@ router.post("/levelup", authUtil, (req, res) => {
     res.json({ success: false });
   }
 });
+router.get("/level", authUtil, (req, res) => {
+  try {
+    console.log("api level");
+    var userid = req.email;
+
+    // db 의 product 테이블에 상품을 편집하기 위한 코드
+    db.query(
+      `select experience from user where email = '${userid}'`,
+      (err, results, field) => {
+        if (err) {
+          console.log(err);
+          res.json({ success: false });
+          // 등록하는 과정에 에러가 있으면 {success: false} 반환
+        } else {
+          db.query(
+            `select experience from user where email = '${userid}'`,
+            (err, results, field) => {
+              if (err) {
+                console.log(err);
+                res.json({
+                  success: false,
+                });
+              } else {
+                res.json({
+                  success: true,
+                  data: results[0],
+                });
+              }
+            }
+          );
+          // 성공적으로 편집하였으면 {success : true} 반환
+        }
+      }
+    );
+  } catch (err) {
+    res.json({ success: false });
+  }
+});
+
 router.get("/rank", authUtil, (req, res) => {
   try {
     var userid = req.email;
@@ -370,7 +409,7 @@ router.post("/donetodo", authUtil, (req, res) => {
     var todoid = req.body.todoid;
     // db 의 product 테이블에 상품을 삭제하기 위한 코드
     db.query(
-      `update todolist set done = true where userid='${userid}' and todoid=${todoid} `,
+      `update todolist set done = true where userid='${userid}' and todoid = ${todoid} `,
       (err, results, field) => {
         if (err) {
           console.log(err);
@@ -387,6 +426,6 @@ router.post("/donetodo", authUtil, (req, res) => {
   } catch (err) {
     console.log(err);
     res.json({ success: false });
-  }
+  };
 });
 module.exports = router;
