@@ -225,8 +225,8 @@ router.delete("/recommend_board/:id", authUtil, (req, res) => {
 /*************************************  유저 레벨업  **************************************** */
 router.post("/levelup", authUtil, (req, res) => {
   try {
-    console.log("api create_product");
-    var userid = req.body.userid;
+    console.log("api levelup");
+    var userid = req.email;
     var experience = req.body.experience;
 
     // db 의 product 테이블에 상품을 편집하기 위한 코드
@@ -264,7 +264,6 @@ router.post("/levelup", authUtil, (req, res) => {
 });
 
 
-
 router.get("/todolist", authUtil, (req, res) => {
   try {
     var userid = req.email;
@@ -296,7 +295,7 @@ router.get("/rank", authUtil, (req, res) => {
     var userid = req.email;
     // db 의 product 테이블에 상품을 삭제하기 위한 코드
     db.query(
-      `select email, name from user order by experience desc`,
+      `select email, name, experience from user order by experience desc`,
       (err, results, field) => {
         if (err) {
           console.log(err);
