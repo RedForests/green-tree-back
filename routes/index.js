@@ -222,7 +222,7 @@ router.post("/levelup", (req, res) => {
                 res.json({
                   success: false,
                 });
-              } else
+              } else {
                 var level = getLevel(results[0].experience);
                 res.json({
                   success: true,
@@ -230,6 +230,7 @@ router.post("/levelup", (req, res) => {
                     tier: level,
                   },
                 });
+              }
             }
           );
           // 성공적으로 편집하였으면 {success : true} 반환
