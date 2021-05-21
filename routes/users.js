@@ -4,6 +4,12 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const compression = require("compression");
 const db = require("../lib/db");
+const randToken = require("rand-token");
+const jwt = require("jsonwebtoken");
+const secretKey = require("../config/secretKey").secretKey;
+const options = require("../config/secretKey").options;
+const TOKEN_EXPIRED = -3;
+const TOKEN_INVALID = -2;
 
 router.use(compression());
 router.use(bodyParser.urlencoded({ extended: false }));
@@ -28,7 +34,8 @@ router.post("/signin", (req, res) => { // 로그인
       if (results.length == 0) {
         res.send({ success: false });
       } else {
-        res.send({ success: true, name: results[0].name });
+        const jwtToken = await jwt.sign(id);
+        res.send({ success: true, token: jwtToken });
       }
     }
   );
@@ -40,15 +47,13 @@ router.post("/signup", (req, res) => { // 회원가입
   var email = req.body.email;
   var password = req.body.password;
   var name = req.body.name;
-  var address = req.body.address;
-  var phone = req.body.phone;
   db.query(`select * from user where email='${email}'`, (err, results, field) => {
     console.log(results);
     if (results.length != 0) {
       res.send({ success: false, message: "이미 존재하는 아이디입니다." });
     } else {
       db.query(
-        `insert into user(email, password, name, address, phone) values ('${email}', '${password}', '${name}', '${address}', '${pho}');`,
+        `insert into user(email, password, name) values ('${email}', '${password}', '${name}');`,
         (err, results, field) => {
           res.send({ success: true });
         }

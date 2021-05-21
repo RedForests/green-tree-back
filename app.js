@@ -6,6 +6,10 @@ const bodyParser = require("body-parser");
 var logger = require('morgan');
 const compression = require("compression");
 const cors = require("cors");
+
+
+const multer = require('multer');
+
 var app = express();
 
 
